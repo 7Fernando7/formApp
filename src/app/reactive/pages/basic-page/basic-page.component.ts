@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
+const rtx5090 = {
+  name: 'RTX 5090',
+  price: 2500,
+  inStorage: 6,
+}
 
 @Component({
   templateUrl: './basic-page.component.html',
   styles: [
   ]
 })
-export class BasicPageComponent {
+export class BasicPageComponent implements OnInit {
 
   // public myform: FormGroup = new FormGroup({
   //   price: new FormControl(''),
@@ -15,16 +21,28 @@ export class BasicPageComponent {
   // });
 
   public myForm: FormGroup = this.fb.group({
-    name: [''],
-    price: [0],
-    storage: [0],
+    name: ['', [ Validators.required, Validators.minLength(3) ]],
+    price: [0, [Validators.required, Validators.min(0) ]],
+    inStorage: [0, [Validators.required, Validators.min(0) ]]
   })
+
 
   constructor( private fb: FormBuilder ){}
 
-  onSave(): void {
+  ngOnInit(): void {
+    // this.myForm.reset( rtx5090 );
+  }
+
+   onSave():void {
+
+    if( this.myForm.invalid ) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
 
     console.log(this.myForm.value);
+
+    this.myForm.reset({ price: 0, inStorage: 0 });
 
   }
 
