@@ -56,7 +56,6 @@ export class BasicPageComponent implements OnInit {
 
     return null;
 
-
   }
 
    onSave():void {
